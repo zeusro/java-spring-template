@@ -3,7 +3,7 @@ pipeline {
     label "jenkins-maven"
   }
   environment {
-    ORG = 'zeusro'
+    ORG = '17zwd'
     APP_NAME = 'java-spring-template'
     CHARTMUSEUM_CREDS = credentials('jenkins-x-chartmuseum')
   }
