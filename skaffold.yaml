@@ -1,0 +1,30 @@
+apiVersion: skaffold/v1beta2
+kind: Config
+build:
+  artifacts:
+  - image: changeme
+    context: .
+    docker: {}
+  tagPolicy:
+    envTemplate:
+      template: '{{.DOCKER_REGISTRY}}/zeusro/java-spring-template:{{.VERSION}}'
+  local: {}
+deploy:
+  kubectl: {}
+profiles:
+- name: dev
+  build:
+    artifacts:
+    - docker: {}
+    tagPolicy:
+      envTemplate:
+        template: '{{.DOCKER_REGISTRY}}/zeusro/java-spring-template:{{.DIGEST_HEX}}'
+    local: {}
+  deploy:
+    helm:
+      releases:
+      - name: java-spring-template
+        chartPath: charts/java-spring-template
+        setValueTemplates:
+          image.repository: '{{.DOCKER_REGISTRY}}/zeusro/java-spring-template'
+          image.tag: '{{.DIGEST_HEX}}'
